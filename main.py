@@ -19,8 +19,6 @@ step = 0.02
 X = torch.arange(start, end, step).unsqueeze(dim = 1)
 y = weight * X + bias
 
-X[:10], y[:10]
-
 train_split = int(0.8 * len(X)) #80% of training set and 20% for testing
 X_train, y_train = X[:train_split], y[:train_split]
 X_test, y_test = X[train_split:], y[train_split:]
@@ -44,4 +42,29 @@ def plot_predictions(train_data=X_train,
     plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
 
   #Show the legend
-  plt.legend(prop={"size": 14});
+  plt.legend(prop={"size": 14})
+
+
+class LinearRegressionModel(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.weights = nn.Parameter(torch.randn(1, 
+                                          dtype=torch.float),
+                              requires_grad=True)
+    
+    self.bias = nn.Parameter(torch.randn(1,
+                                        dtype=torch.float),
+                            requires_grad=True)
+    
+  def forward(self, x:torch.Tensor) -> torch.Tensor:
+    return self.weights * x + self.bias
+
+
+#Set the manual seed since nn.Paramater are randomly initialized
+torch.manual_seed(42)
+
+model_0 = LinearRegressionModel()
+
+#Make predictions with model
+with torch.inference_mode():
+  y_preds = model_0(X_test)
