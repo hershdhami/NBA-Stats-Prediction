@@ -61,7 +61,6 @@ class LinearRegressionModel(nn.Module):
     return self.weights * x + self.bias
 
 
-
 #Set the manual seed since nn.Paramater are randomly initialized
 torch.manual_seed(42)
 
