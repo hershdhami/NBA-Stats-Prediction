@@ -68,3 +68,5 @@ model_0 = LinearRegressionModel()
 #Make predictions with model
 with torch.inference_mode():
   y_preds = model_0(X_test)
+
+print(y_preds)
