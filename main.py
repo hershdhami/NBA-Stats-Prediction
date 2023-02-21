@@ -44,6 +44,7 @@ def plot_predictions(train_data=X_train,
   #Show the legend
   plt.legend(prop={"size": 14})
 
+plot_predictions()
 
 class LinearRegressionModel(nn.Module):
   def __init__(self):
@@ -58,6 +59,7 @@ class LinearRegressionModel(nn.Module):
     
   def forward(self, x:torch.Tensor) -> torch.Tensor:
     return self.weights * x + self.bias
+
 
 
 #Set the manual seed since nn.Paramater are randomly initialized
