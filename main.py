@@ -137,3 +137,11 @@ for epoch in range(epochs):
 
 print(f"The changing test_loss_values are: {test_loss_values}")
 
+model_0.eval()
+
+with torch.inference_mode():
+  y_preds = model_0(X_test)
+
+#Have to convert to evaluation mode
+
+plot_predictions(predictions=y_preds)
