@@ -44,7 +44,7 @@ def plot_predictions(train_data=X_train,
   #Show the legend
   plt.legend(prop={"size": 14})
 
-plot_predictions()
+#plot_predictions()
 
 class LinearRegressionModel(nn.Module):
   def __init__(self):
@@ -74,7 +74,7 @@ print(f"Number of testing samples: {len(X_test)}")
 print(f"The testing values are: \n {X_test}")
 print(f"Predicted values: \n {y_preds}")
 
-plot_predictions(predictions=y_preds)
+#plot_predictions(predictions=y_preds)
 
 loss_fn = nn.L1Loss()
 
@@ -144,4 +144,24 @@ with torch.inference_mode():
 
 #Have to convert to evaluation mode
 
-plot_predictions(predictions=y_preds)
+plt.plot(epoch_count, train_loss_values, Label="Training Loss Data")
+plt.plot(epoch_count, test_loss_values, label="Testing Loss Data")
+plt.title("Loss Information")
+plt.ylabel("Loss")
+plt.xlabel("Epoch")
+plt.legend()
+
+class LinearRegressionModelV2(nn.Module):
+    def __init__(self):
+      super().__init__()
+
+      #Use nn.Linear() for creating the model parameters
+      self.linear_layer = nn.Linear(in_features=1,out_features=1)
+
+      #Have to define what the input and output is of the function
+      def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.linear_layer(x)
+      
+torch.manual_seed(42)
+model_1 = LinearRegressionModelV2()
+model_1, model_1.state_dict()
