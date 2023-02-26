@@ -151,17 +151,3 @@ plt.ylabel("Loss")
 plt.xlabel("Epoch")
 plt.legend()
 
-class LinearRegressionModelV2(nn.Module):
-    def __init__(self):
-      super().__init__()
-
-      #Use nn.Linear() for creating the model parameters
-      self.linear_layer = nn.Linear(in_features=1,out_features=1)
-
-      #Have to define what the input and output is of the function
-      def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.linear_layer(x)
-      
-torch.manual_seed(42)
-model_1 = LinearRegressionModelV2()
-model_1, model_1.state_dict()
