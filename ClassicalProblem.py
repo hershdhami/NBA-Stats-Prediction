@@ -64,3 +64,6 @@ untrained_preds = model_0(X_test)
 
 print(f"The first 10 predictions are: {untrained_preds[:10,0]} \n")
 print(f"The first 10 test results were: {y_test[:10]} \n")
+
+#Need to use a different loss function because the one we originally chose ONLY works on regression problems
+
