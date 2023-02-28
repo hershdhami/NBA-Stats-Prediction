@@ -67,3 +67,7 @@ print(f"The first 10 test results were: {y_test[:10]} \n")
 
 #Need to use a different loss function because the one we originally chose ONLY works on regression problems
 
+loss_fn = nn.BCEWithLogitsLoss()
+
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.1)
