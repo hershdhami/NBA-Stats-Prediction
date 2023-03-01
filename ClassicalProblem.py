@@ -71,3 +71,8 @@ loss_fn = nn.BCEWithLogitsLoss()
 
 optimizer = torch.optim.SGD(params=model_0.parameters(),
                             lr=0.1)
+
+def accuracy(y_true, y_pred):
+    ratio = torch.eq(y_true,y_pred).sum().item()
+    totalRatio = ratio/len(y_pred) * 100
+    return totalRatio
