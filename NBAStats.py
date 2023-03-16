@@ -6,18 +6,16 @@ import matplotlib.pyplot as plt
 #IN FUTURE Web Scrape the NBA data and find out which player has been increasingly doing good
     #Could help with placing bets on whether he will shoot 50% above and etc.
 
-df = pd.read_excel("NBAStats.xlsx", )
-print(df)
+df = pd.read_excel("sportsref_klaystats.xlsx", usecols='L:AD')
 
-nbaStatline = torch.from_numpy(df.to_numpy()[:,:8]).type(torch.float)
-nbaLabel = torch.from_numpy(df.to_numpy()[:,8:]).type(torch.float)
+nbaStatline = torch.from_numpy(df.to_numpy()[:,:18]).type(torch.float)
+nbaLabel = torch.from_numpy(df.to_numpy()[:,18:]).type(torch.float)
 
-nbaStatLineTrain = nbaStatline[:5,:]
-nbaStatLineTest = nbaStatline[5:,:]
+nbaStatLineTrain = nbaStatline[:110,:]
+nbaStatLineTest = nbaStatline[110:,:]
 
-nbaLabelTrain = nbaLabel[:5].squeeze()
-nbaLabelTest = nbaLabel[5:].squeeze()
-
+nbaLabelTrain = nbaLabel[:110].squeeze()
+nbaLabelTest = nbaLabel[110:].squeeze()
 
 #This displays the graphs compares to Good/Bad
 
@@ -27,28 +25,19 @@ nbaLabelTest = nbaLabel[5:].squeeze()
 #             c=nbaLabel,
 #             cmap=plt.cm.RdYlBu)
 
-def plotAllFeatures(feature1,
-                    feature2,
-                    feature3,
-                    label):
-    plt.scatter(nbaStatline[:,0], nbaLabel, c="b", s=4, label="Minutes")
-    plt.scatter(nbaStatline[:,1], nbaLabel, c="g", s=4, label="Points")
-    plt.scatter(nbaStatline[:,2], nbaLabel, c="r", s=4, label="FG")
-    plt.legend(prop={"size": 14})
-
-plotAllFeatures(nbaStatline[:,0], nbaStatline[:,1], nbaStatline[:,2], nbaLabel)
-
 class nbaPlayerDefineModel(nn.Module):
     """Attempting to predict whether NBA Player did Good/Bad in a certain night"""
     def __init__(self):
         super().__init__()
-        self.layer_1 = nn.Linear(in_features=8, out_features=10)
-        self.layer_2 = nn.Linear(in_features=10, out_features=10)
-        self.layer_3 = nn.Linear(in_features=10, out_features=1)
+        self.layer_1 = nn.Linear(in_features=18, out_features=180)
+        self.layer_2 = nn.Linear(in_features=180, out_features=100)
+        self.layer_3 = nn.Linear(in_features=100, out_features=40)
+        self.layer_4 = nn.Linear(in_features=40, out_features=20)
+        self.layer_5 = nn.Linear(in_features=20, out_features=1)
         self.relu = nn.ReLU()
 
     def forward(self, x):
-        return self.layer_3(self.layer_2(self.relu(self.layer_1(x))))
+        return self.layer_5(self.layer_4((self.layer_3(self.relu(self.layer_2(self.layer_1(x)))))))
 
 def accuracy_fn(y_true, y_pred):
     ratio = torch.eq(y_true,y_pred).sum().item()
@@ -64,7 +53,9 @@ loss_fn = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.SGD(params=model_0.parameters(),
                             lr=0.1)
 
-print()
+epoch_count = []
+accuracy_nums = []
+loss_nums = []
 
 for epoch in range(epochs):
     model_0.train()
@@ -92,15 +83,30 @@ for epoch in range(epochs):
         test_acc = accuracy_fn(y_true=nbaLabelTest,y_pred=test_pred)
 
     if epoch % 200 == 0:
-        print(y_pred)
-        print(nbaLabelTrain)
         print(f"Epoch: {epoch} | Loss: {loss:.5f}, Accuracy: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Accuracy: {test_acc:.2f}%")
-
+        epoch_count.append(epoch)
+        accuracy_nums.append(acc)
+        loss_nums.append(loss.cpu().detach().numpy())
 
 model_0.eval()
 with torch.inference_mode():
     y_preds = torch.round(torch.sigmoid(model_0(nbaStatLineTest).squeeze()))
 
-y_preds, nbaLabelTest
 
 #It is working but it is underfitted because of the lack of data!!!
+
+model_0.eval()
+def plotAllFeatures(feature1,
+                    label1,
+                    xLabel,
+                    yLabel,
+                    plotLabel):
+    plt.plot(feature1, label1, c="b", label=plotLabel)
+    plt.legend(prop={"size": 14})
+    plt.ylabel(yLabel)
+    plt.xlabel(xLabel)
+    plt.show()
+
+plotAllFeatures(epoch_count, accuracy_nums, "Epoch Count", "Accuracy Percentage", "accuracy")
+plotAllFeatures(epoch_count, loss_nums, "Epoch Count", "Losses", "losses")
+
