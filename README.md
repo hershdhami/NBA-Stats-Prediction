@@ -7,7 +7,7 @@ This project is all the different things I have been trying to get better at mac
 * 📈 **Linear Regression:** I implemented my first model with Linear Regression to alter the gradient and train my model to produce the necessary outputs
 * ⚪ **Classification Problems:** Working on solving a Neural Network Classification Problem instead of simple Linear Regression
 
-##Personal Project
+## Personal Project
 - With the learning from the practice I did above, I created a model that was trained to determine whether a basketball player performed well or poor on a certain game night. I decided to train the model with Klay Thompson's 2022-2023 stats and it actually worked out!
 - Here is some of the data I received so far
 
