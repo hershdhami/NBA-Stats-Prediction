@@ -14,7 +14,6 @@ This project is all the different things I have been trying to get better at mac
 * ⚪ **Table of Epoch Count vs Accuracy, Loss and Test Loss/Accuracy**
 
 Epoch: 0 | Loss: 0.69598, Accuracy: 50.00% | Test Loss: 0.81133, Test Accuracy: 68.00%   
-
 Epoch: 200 | Loss: 0.26894, Accuracy: 88.18% | Test Loss: 0.42585, Test Accuracy: 88.00%   
 
 Epoch: 400 | Loss: 0.15111, Accuracy: 94.55% | Test Loss: 0.54692, Test Accuracy: 92.00%    
