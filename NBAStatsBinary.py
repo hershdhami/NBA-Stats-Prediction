@@ -17,14 +17,6 @@ nbaStatLineTest = nbaStatline[110:,:]
 nbaLabelTrain = nbaLabel[:110].squeeze()
 nbaLabelTest = nbaLabel[110:].squeeze()
 
-#This displays the graphs compares to Good/Bad
-
-# SCATTER PLOT OF EVERYTHING
-# plt.scatter(x=nbaStatline[:,2],
-#             y=nbaStatline[:,3],
-#             c=nbaLabel,
-#             cmap=plt.cm.RdYlBu)
-
 class nbaPlayerDefineModel(nn.Module):
     """Attempting to predict whether NBA Player did Good/Bad in a certain night"""
     def __init__(self):
@@ -35,9 +27,10 @@ class nbaPlayerDefineModel(nn.Module):
         self.layer_4 = nn.Linear(in_features=40, out_features=20)
         self.layer_5 = nn.Linear(in_features=20, out_features=1)
         self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        return self.layer_5(self.layer_4((self.layer_3(self.relu(self.layer_2(self.layer_1(x)))))))
+        return self.sigmoid(self.layer_5(self.layer_4(self.relu(self.layer_3(self.relu(self.layer_2(self.layer_1(x))))))))
 
 def accuracy_fn(y_true, y_pred):
     ratio = torch.eq(y_true,y_pred).sum().item()
@@ -47,7 +40,7 @@ def accuracy_fn(y_true, y_pred):
 model_0 = nbaPlayerDefineModel()
 
 torch.manual_seed(42)
-epochs = 1000
+epochs = 801
 
 loss_fn = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.SGD(params=model_0.parameters(),
@@ -61,7 +54,7 @@ for epoch in range(epochs):
     model_0.train()
 
     y_logits = model_0(nbaStatLineTrain).squeeze()
-    y_pred = torch.round(torch.sigmoid(y_logits))
+    y_pred = torch.round(y_logits)
 
     loss = loss_fn(y_logits, nbaLabelTrain)
     acc = accuracy_fn(y_true=nbaLabelTrain,y_pred=y_pred)
@@ -76,7 +69,7 @@ for epoch in range(epochs):
     with torch.inference_mode():
         # 1. Forward Pass
         test_logits = model_0(nbaStatLineTest).squeeze()
-        test_pred = torch.round(torch.sigmoid(test_logits))
+        test_pred = torch.round(test_logits)
         
         # 2. Calculate loss and accuracy
         test_loss = loss_fn(test_logits,nbaLabelTest)
@@ -90,10 +83,10 @@ for epoch in range(epochs):
 
 model_0.eval()
 with torch.inference_mode():
-    y_preds = torch.round(torch.sigmoid(model_0(nbaStatLineTest).squeeze()))
+    y_preds = torch.round(model_0(nbaStatLineTest).squeeze())
 
-
-#It is working but it is underfitted because of the lack of data!!!
+print(y_preds)
+print(nbaLabelTest)
 
 model_0.eval()
 def plotAllFeatures(feature1,
