@@ -21,8 +21,8 @@ Epoch: 800 | Loss: 0.00544, Accuracy: 100.00% | Test Loss: 1.62044, Test Accurac
 
 - NOTE: I think more data is needed to get a better test accuracy OR a complete rework to the neural model is needed
 
-* 📈 **Accuracy Graph** 
-![image](https://user-images.githubusercontent.com/69739606/225483842-2a89a1bd-ea61-4a9a-8c7b-6de398851de1.png)
-
-* 📈 **Losses Graph** 
-![image](https://user-images.githubusercontent.com/69739606/225483919-5afdcdd3-35a3-49d2-80a7-3b6460ff4869.png)
+* 📈 **Accuracy Graph**      
+![image](https://user-images.githubusercontent.com/69739606/225483842-2a89a1bd-ea61-4a9a-8c7b-6de398851de1.png)     
+ 
+* 📈 **Losses Graph**     
+![image](https://user-images.githubusercontent.com/69739606/225483919-5afdcdd3-35a3-49d2-80a7-3b6460ff4869.png)    
